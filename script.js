@@ -2,18 +2,23 @@ class Calculator {
     constructor(previousOperandTextElement, currentOperandTextElement) {
         this.previousOperandTextElement = previousOperandTextElement;
         this.currentOperandTextElement = currentOperandTextElement;
+        this.currentOperand = "";
     }
     clear() {
         this.previousOperandTextElement = "";
         this.currentOperandTextElement = "";
         this.operation = undefined;
+        this.currentOperand = "";
     }
 
     delete() {}
 
     // toString so it will get appended, not added
     appendNumber(number) {
-        this.currentOperand = number;
+        if (number === "." && this.currentOperand.includes(".")) return;
+
+        this.currentOperand =
+            this.currentOperand.toString() + number.toString();
     }
 
     chooseOperation(operation) {}
@@ -45,6 +50,13 @@ const calculator = new Calculator(
 numberButtons.forEach((button) => {
     button.addEventListener("click", () => {
         calculator.appendNumber(button.innerText);
+        calculator.updateDisplay();
+    });
+});
+
+operationButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        calculator.chooseOperation(button.innerText);
         calculator.updateDisplay();
     });
 });
